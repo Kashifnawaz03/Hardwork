@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol";
 
-contract myDemoToken is ERC20 {
+contract preSale is ERC20 {
     using SafeMath for uint;
     uint public cap;
     uint MaxCap = 10;
@@ -30,7 +30,7 @@ contract myDemoToken is ERC20 {
     function whiteList() public {
     admin = msg.sender;
   }
-  function whitelistAddress(address[] memory _users , bool _whitelisted) public {
+  function whiteListAddress(address[] memory _users , bool _whitelisted) public {
     require(msg.sender == admin);
     for (uint i = 0; i < _users.length; i++) {
       if (whitelist[_users[i]] == _whitelisted) continue;
@@ -46,7 +46,7 @@ contract myDemoToken is ERC20 {
     }
 }
        
-   function buyPreSale(uint amount)public payable{
+   function buySale(uint amount)public payable{
        
         require(msg.value <= MaxCap, "You have exceed the Max cap limit");
         require(block.timestamp > presalestart, "You have to wait");
@@ -55,7 +55,7 @@ contract myDemoToken is ERC20 {
         accounts[msg.sender] *=5;
         payable(msg.sender).transfer(amount);
    }
-   function buyAfterPreSale(uint amount)public payable{
+   function buyAfter(uint amount)public payable{
         require(accounts[msg.sender] == 0, "Account already exist");
         require(msg.value > 0 && msg.sender != address(0), "Value should not be 0 or Invalid address");
         require(block.timestamp > presalesend, "You have to wait");  
@@ -63,7 +63,7 @@ contract myDemoToken is ERC20 {
         accounts[msg.sender] *=2;
         payable(msg.sender).transfer(amount);
    }
-   function InquireBalance()public view returns(uint){
+   function inquireBalance()public view returns(uint){
         return accounts[msg.sender];
     }
 }
